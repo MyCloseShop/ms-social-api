@@ -1,0 +1,59 @@
+trigger:
+  branches:
+    include:
+      - develop
+
+pool:
+  name: 'Default'
+
+variables:
+  JAVA_HOME: '/usr/lib/jvm/jdk-21.0.4'
+  MAVEN_OPTS: '-Xmx1024m'
+  MAVEN_DIRECTORY: '/opt/maven'  # Répertoire racine de Maven
+
+stages:
+  - stage: BuildLintAndTest
+    jobs:
+      - job: Build
+        steps:
+          # Checkout du code
+          - checkout: self
+          # Maven build (clean et package sans les tests)
+          - task: Maven@4
+            name: Clean
+            inputs:
+              mavenPomFile: 'pom.xml'
+              goals: 'clean'
+              publishJUnitResults: true
+              testResultsFiles: '**/surefire-reports/TEST-*.xml'
+              javaHomeOption: 'JDKVersion'
+              mavenVersionOption: 'Path'
+              mavenDirectory: '$(MAVEN_DIRECTORY)'  # Utilise le répertoire racine de Maven
+              mavenAuthenticateFeed: false
+              effectivePomSkip: false
+              sonarQubeRunAnalysis: false
+          - task: Maven@4
+            name: Build
+            inputs:
+              mavenPomFile: 'pom.xml'
+              goals: 'clean package'
+              options: '-DskipTests=true'
+              javaHomeOption: 'JDKVersion'
+              mavenVersionOption: 'Path'
+              mavenDirectory: '$(MAVEN_DIRECTORY)'  # Utilise le répertoire racine de Maven
+              mavenAuthenticateFeed: false
+              effectivePomSkip: false
+              sonarQubeRunAnalysis: false
+
+          # Exécuter les tests
+          - task: Maven@4
+            name: Test
+            inputs:
+              mavenPomFile: 'pom.xml'
+              goals: 'test'
+              javaHomeOption: 'JDKVersion'
+              mavenVersionOption: 'Path'
+              mavenDirectory: '$(MAVEN_DIRECTORY)'  # Utilise le répertoire racine de Maven
+              mavenAuthenticateFeed: false
+              effectivePomSkip: false
+              sonarQubeRunAnalysis: false

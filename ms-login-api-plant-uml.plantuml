@@ -1,0 +1,51 @@
+@startuml
+
+!theme plain
+top to bottom direction
+skinparam linetype ortho
+
+entity JwtUserDetails << record >> {
+   enabled: boolean
+   accountNonLocked: boolean
+   password: String
+   credentialsNonExpired: boolean
+   accountNonExpired: boolean
+   authorities: Collection<GrantedAuthority>
+   username: String
+}
+class Role {
+   roleName: String
+   roleId: int
+   updatedAt: Instant
+   users: Set<User>
+   createdAt: Instant
+}
+class User {
+   passwordHash: String
+   lastName: String
+   email: String
+   phoneNumber: String
+   userId: UUID
+   firstName: String
+   username: String
+   updatedAt: Instant
+   roles: Set<Role>
+   createdAt: Instant
+}
+class UserRole {
+   role: Role
+   id: UserRoleId
+   user: User
+}
+class UserRoleId {
+   roleId: int
+   userId: UUID
+}
+
+JwtUserDetails "1" *-[#595959,plain]-> "user\n1" User           
+Role           "1" *-[#595959,plain]-> "users\n*" User           
+User           "1" *-[#595959,plain]-> "roles\n*" Role           
+UserRole       "1" *-[#595959,plain]-> "role\n1" Role           
+UserRole       "1" *-[#595959,plain]-> "user\n1" User           
+UserRole       "1" *-[#595959,plain]-> "id\n1" UserRoleId     
+@enduml

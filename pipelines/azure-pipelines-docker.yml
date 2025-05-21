@@ -1,0 +1,31 @@
+trigger:
+  branches:
+    include:
+      - develop
+
+pool:
+  name: 'Default'
+
+variables:
+  IMAGE_NAME: 'mycloseshop/ms-login'
+  DOCKER_REGISTRY_SERVICE_CONNECTION: 'docker-hub-connection'
+  VERSION_PREFIX: '1.0.'
+
+stages:
+  - stage: BuildAndPushDocker
+    jobs:
+      - job: Docker
+        steps:
+          # Checkout du code
+          - checkout: self
+
+          # Build l'image Docker en utilisant le Dockerfile
+          - task: Docker@2
+            inputs:
+              containerRegistry: '$(DOCKER_REGISTRY_SERVICE_CONNECTION)'  # Connexion à ton ACR ou Docker Hub
+              repository: '$(IMAGE_NAME)'  # Nom de l'image Docker
+              command: 'buildAndPush'
+              Dockerfile: '**/Dockerfile'
+              tags: |
+                $(VERSION_PREFIX)$(Build.BuildId)
+                latest

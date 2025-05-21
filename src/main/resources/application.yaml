@@ -1,0 +1,46 @@
+eureka:
+  client:
+    service-url:
+      defaultZone: ${EUREKA_HOST:http://localhost:8761/eureka/}
+
+logging:
+  level:
+    org.springframework.cloud.openfeign: DEBUG
+    org.springframework.web: DEBUG
+    com.etna.gpe.mycloseshop.ms_quote_api: DEBUG
+    com.etna.gpe.mycloseshop.security_api: DEBUG
+    slf4j: DEBUG
+    org.springframework.security: DEBUG
+server:
+  port: ${SPRING_APP_URL:8085}
+  servlet:
+    context-path: /api/ms-quote-api
+spring:
+  application:
+    name: 'ms-quote-api'
+  datasource:
+    url: ${SPRING_DATASOURCE_URL:jdbc:mysql://localhost:3306/db-ms-quote?useUnicode=true&characterEncoding=utf8&useSSL=false&serverTimezone=UTC}
+    username: ${SPRING_DATASOURCE_USERNAME:user}
+    password: ${SPRING_DATASOURCE_PASSWORD:secret}
+    driverClassName: com.mysql.cj.jdbc.Driver
+  cloud:
+    discovery:
+      enabled: true
+
+  flyway:
+    enabled: true
+    locations: classpath:db/migration
+    validate-on-migrate: true
+
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    show-sql: true
+
+  main:
+    allow-bean-definition-overriding: true
+springdoc:
+  api-docs:
+    enabled: true
+  swagger-ui:
+    path: /swagger-ui.html
