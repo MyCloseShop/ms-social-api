@@ -8,27 +8,27 @@
 # database or a cache. For examples, see the Awesome Compose repository:
 # https://github.com/docker/awesome-compose
 services:
-  ms-login-api:
-    image: 'redsnoww/ms-login-api:0.5.0'
-    container_name: 'ms-login-api'
+  ms-social-api:
+    image: 'redsnoww/ms-social-api:0.5.0'
+    container_name: 'ms-social-api'
     ports:
       - "8081:8080"
     depends_on:
-      db-ms-login:
+      db-ms-social:
         condition: service_healthy
     environment:
         - 'SPRING_APP_URL=8080'
-        - 'SPRING_DATASOURCE_URL=jdbc:mysql://db-ms-login:3306/db-ms-login'
+        - 'SPRING_DATASOURCE_URL=jdbc:mysql://db-ms-social:3306/db-ms-social'
         - 'SPRING_DATASOURCE_USERNAME=user'
         - 'SPRING_DATASOURCE_PASSWORD=secret'
         - 'SPRING_RABBITMQ_HOST=rabbitmq'
         - 'SPRING_RABBITMQ_PORT=5672'
 
-  db-ms-login:
-    container_name: 'db-ms-login'
+  db-ms-social:
+    container_name: 'db-ms-social'
     image: 'mysql:latest'
     environment:
-      - 'MYSQL_DATABASE=db-ms-login'
+      - 'MYSQL_DATABASE=db-ms-social'
       - 'MYSQL_PASSWORD=secret'
       - 'MYSQL_ROOT_PASSWORD=secret'
       - 'MYSQL_USER=user'
