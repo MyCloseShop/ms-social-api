@@ -1,2 +1,0 @@
-USE
-`db-ms-social`;
