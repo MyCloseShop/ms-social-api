@@ -8,13 +8,14 @@ import java.util.UUID;
 @Table(name = "comment")
 public class Comment {
     @Id
-    @Column(name = "comment_id", nullable = false)
+    @GeneratedValue(strategy = GenerationType.UUID)
+    @Column(columnDefinition = "BINARY(16)", name = "comment_id", nullable = false, length = 36)
     private UUID id;
 
     @Column(name = "content", nullable = false)
     private String content;
 
-    @Column(name = "post_id", nullable = false)
+    @Column(columnDefinition = "BINARY(16)", name = "post_id", nullable = false, length = 36)
     private UUID postId;
 
     @Column(columnDefinition = "BINARY(16)", name = "user_id", nullable = false, length = 36)
@@ -27,9 +28,7 @@ public class Comment {
     private LocalDateTime updatedAt;
 
     public Comment() {
-        this.id = UUID.randomUUID();
-        this.createdAt = LocalDateTime.now();
-        this.updatedAt = LocalDateTime.now();
+        // Constructeur par défaut requis par JPA/Hibernate
     }
 
     // Getters and Setters

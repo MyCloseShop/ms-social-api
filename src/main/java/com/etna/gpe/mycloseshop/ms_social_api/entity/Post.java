@@ -8,6 +8,7 @@ import java.util.UUID;
 @Table(name = "post")
 public class Post {
     @Id
+    @GeneratedValue(strategy = GenerationType.UUID)
     @Column(columnDefinition = "BINARY(16)", name = "post_id", nullable = false, length = 36)
     private UUID id;
 
@@ -30,7 +31,14 @@ public class Post {
     private LocalDateTime updatedAt;
 
     public Post() {
-        this.id = UUID.randomUUID();
+    // Constructeur par défaut requis par JPA/Hibernate
+}
+
+    public Post(String nom, String description, String media, UUID shopId) {
+        this.nom = nom;
+        this.description = description;
+        this.media = media;
+        this.shopId = shopId;
         this.createdAt = LocalDateTime.now();
         this.updatedAt = LocalDateTime.now();
     }
