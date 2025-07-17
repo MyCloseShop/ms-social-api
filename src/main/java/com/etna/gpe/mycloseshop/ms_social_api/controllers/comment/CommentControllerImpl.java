@@ -1,28 +1,31 @@
 package com.etna.gpe.mycloseshop.ms_social_api.controllers.comment;
 
 import com.etna.gpe.mycloseshop.ms_social_api.dtos.comment.CommentDto;
+import com.etna.gpe.mycloseshop.ms_social_api.dtos.comment.CreateCommentDto;
 import com.etna.gpe.mycloseshop.ms_social_api.services.comment.ICommentService;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
+
 import java.util.List;
 import java.util.UUID;
 
 @RestController
 public class CommentControllerImpl implements ICommentController {
 
-    @Autowired
     private ICommentService commentService;
+
+    public CommentControllerImpl(ICommentService commentService) {
+        this.commentService = commentService;
+    }
 
     @PostMapping
     @Override
-    public CommentDto createComment(@RequestBody CommentDto comment) {
+    public CommentDto createComment(@RequestBody CreateCommentDto comment) {
         return commentService.createComment(comment);
     }
 

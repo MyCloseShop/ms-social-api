@@ -1,12 +1,13 @@
 package com.etna.gpe.mycloseshop.ms_social_api.controllers.post;
 
 import com.etna.gpe.mycloseshop.common_api.ms_login.dto.error.ResponseError;
+import com.etna.gpe.mycloseshop.ms_social_api.dtos.post.CreatePostDto;
 import com.etna.gpe.mycloseshop.ms_social_api.dtos.post.PostDto;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
-import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -33,7 +34,7 @@ public interface IPostController {
         })
         ResponseEntity<PostDto> createPost(
                 @Parameter(description = "Post to create", required = true)
-                @RequestBody PostDto post);
+                @RequestBody CreatePostDto post);
 
         @GetMapping
         @Operation(summary = "Get all posts")
