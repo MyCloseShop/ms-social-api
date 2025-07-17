@@ -1,33 +1,40 @@
 package com.etna.gpe.mycloseshop.ms_social_api.controllers.post;
 
+import com.etna.gpe.mycloseshop.ms_social_api.dtos.post.CreatePostDto;
 import com.etna.gpe.mycloseshop.ms_social_api.dtos.post.PostDto;
 import com.etna.gpe.mycloseshop.ms_social_api.services.post.IPostService;
-
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 import java.util.UUID;
 
 @RestController
+@RequestMapping("/posts")
 @SecurityRequirement(name = "bearerAuth")
 public class PostControllerImpl implements IPostController {
 
     public static final String SUCCESS = "success";
     public static final String ERROR = "error";
 
+    private final IPostService postService;
+
     public PostControllerImpl(IPostService postService) {
         this.postService = postService;
     }
 
-    @Autowired
-    private final IPostService postService;
 
     @Override
     @PostMapping
-    public ResponseEntity<PostDto> createPost(@RequestBody PostDto post) {
+    public ResponseEntity<PostDto> createPost(@RequestBody CreatePostDto post) {
         return ResponseEntity.ok(postService.createPost(post));
     }
 

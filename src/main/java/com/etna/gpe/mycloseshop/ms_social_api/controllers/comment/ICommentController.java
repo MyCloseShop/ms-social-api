@@ -1,16 +1,15 @@
 package com.etna.gpe.mycloseshop.ms_social_api.controllers.comment;
 
-import com.etna.gpe.mycloseshop.ms_social_api.dtos.comment.CommentDto;
-
-
 import com.etna.gpe.mycloseshop.common_api.ms_login.dto.error.ResponseError;
+import com.etna.gpe.mycloseshop.ms_social_api.dtos.comment.CommentDto;
+import com.etna.gpe.mycloseshop.ms_social_api.dtos.comment.CreateCommentDto;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
-import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -34,7 +33,7 @@ public interface ICommentController {
     })  
     public CommentDto createComment(
             @Parameter(description = "Comment to create", required = true)
-            @RequestBody CommentDto comment);
+            @RequestBody CreateCommentDto comment);
     
     @GetMapping
     @Operation(summary = "Get all comments")

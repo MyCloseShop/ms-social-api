@@ -1,10 +1,11 @@
 package com.etna.gpe.mycloseshop.ms_social_api.services.post;
 
+import com.etna.gpe.mycloseshop.ms_social_api.dtos.post.CreatePostDto;
 import com.etna.gpe.mycloseshop.ms_social_api.dtos.post.PostDto;
-import com.etna.gpe.mycloseshop.ms_social_api.exceptions.ResourceNotFoundException;
-import com.etna.gpe.mycloseshop.ms_social_api.repository.PostRepository;
 import com.etna.gpe.mycloseshop.ms_social_api.entity.Post;
+import com.etna.gpe.mycloseshop.ms_social_api.exceptions.ResourceNotFoundException;
 import com.etna.gpe.mycloseshop.ms_social_api.mappers.PostMapper;
+import com.etna.gpe.mycloseshop.ms_social_api.repository.PostRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,6 +18,7 @@ import java.util.UUID;
 @Transactional
 public class PostServiceImpl implements IPostService {
 
+    public static final String POST_NOT_FOUND_WITH_ID = "Post not found with id: ";
     private final PostRepository postRepository;
 
     @Autowired
@@ -25,9 +27,8 @@ public class PostServiceImpl implements IPostService {
     }
     
     @Override
-    public PostDto createPost(PostDto postDto) {
-        Post post = PostMapper.toEntity(postDto);
-        post.setId(UUID.randomUUID());
+    public PostDto createPost(CreatePostDto postDto) {
+        Post post = PostMapper.requestToEntity(postDto);
         Post saved = postRepository.save(post);
         return PostMapper.toDto(saved);
     }
@@ -44,14 +45,14 @@ public class PostServiceImpl implements IPostService {
     @Transactional(readOnly = true)
     public PostDto getPostById(UUID id) {
         Post post = postRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Post not found with id: " + id));
+                .orElseThrow(() -> new ResourceNotFoundException(POST_NOT_FOUND_WITH_ID + id));
         return PostMapper.toDto(post);
     }
     
     @Override
     public PostDto updatePost(UUID id, PostDto postDetails) {
         Post post = postRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Post not found with id: " + id));
+                .orElseThrow(() -> new ResourceNotFoundException(POST_NOT_FOUND_WITH_ID + id));
         post.setNom(postDetails.getNom());
         post.setDescription(postDetails.getDescription());
         post.setMedia(postDetails.getMedia());
@@ -64,7 +65,7 @@ public class PostServiceImpl implements IPostService {
     @Override
     public void deletePost(UUID id) {
         Post post = postRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Post not found with id: " + id));
+                .orElseThrow(() -> new ResourceNotFoundException(POST_NOT_FOUND_WITH_ID + id));
         postRepository.delete(post);
     }
     

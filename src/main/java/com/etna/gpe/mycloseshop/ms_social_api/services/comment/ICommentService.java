@@ -1,11 +1,13 @@
 package com.etna.gpe.mycloseshop.ms_social_api.services.comment;
 
 import com.etna.gpe.mycloseshop.ms_social_api.dtos.comment.CommentDto;
+import com.etna.gpe.mycloseshop.ms_social_api.dtos.comment.CreateCommentDto;
+
 import java.util.List;
 import java.util.UUID;
 
 public interface ICommentService {
-    CommentDto createComment(CommentDto comment);
+    CommentDto createComment(CreateCommentDto comment);
     List<CommentDto> getAllComments();
     CommentDto getCommentById(UUID id);
     CommentDto updateComment(UUID id, CommentDto comment);

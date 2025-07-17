@@ -6,7 +6,6 @@ import com.etna.gpe.mycloseshop.security_api.config.JwtRequestFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.annotation.Order;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -22,8 +21,7 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import java.util.List;
 
 @Configuration
-@Order(1)
-public class MsQuoteSecurityConfig {
+public class MsSocialSecurityConfig {
 
     private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
 
@@ -32,7 +30,7 @@ public class MsQuoteSecurityConfig {
     private final DaoAuthenticationProvider authenticationProvider;
 
     @Autowired
-    public MsQuoteSecurityConfig(
+    public MsSocialSecurityConfig(
             JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint,
             JwtRequestFilter jwtRequestFilter,
             DaoAuthenticationProvider authenticationProvider
@@ -44,32 +42,18 @@ public class MsQuoteSecurityConfig {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http.csrf(
-                AbstractHttpConfigurer::disable
-        );
-
-        http.cors(
-                cors -> cors.configurationSource(corsConfigurationSource())
-        );
-
-        http.sessionManagement(
-                sessionManagement -> sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-        );
-
-        http.exceptionHandling(
-                exceptionHandling -> exceptionHandling
+        http.csrf(AbstractHttpConfigurer::disable)
+                .cors(cors -> cors.configurationSource(msSocialCorsConfigurationSource()))
+                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .exceptionHandling(ex -> ex
                         .authenticationEntryPoint(jwtAuthenticationEntryPoint)
-                        .accessDeniedHandler(accessDeniedHandler())
-        );
-
-        http.authorizeHttpRequests(
-                authorizeRequests ->
-                        authorizeRequests
-                                .requestMatchers("/swagger-ui/**", "/v3/api-docs/**").permitAll()
-                                .anyRequest().authenticated()
-        );
-
-        http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
+                        .accessDeniedHandler(msSocialAccessDeniedHandler())
+                )
+                .authorizeHttpRequests(auth -> auth
+                        .requestMatchers("/swagger-ui/**", "/v3/api-docs/**").permitAll()
+                        .anyRequest().authenticated()
+                )
+                .addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }
@@ -80,12 +64,12 @@ public class MsQuoteSecurityConfig {
     }
 
     @Bean
-    public AccessDeniedHandler accessDeniedHandler() {
+    public AccessDeniedHandler msSocialAccessDeniedHandler() {
         return new CustomAccessDeniedHandler();
     }
 
     @Bean
-    public CorsConfigurationSource corsConfigurationSource() {
+    public CorsConfigurationSource msSocialCorsConfigurationSource() {
         CorsConfiguration source = new CorsConfiguration();
         source.setAllowedOrigins(List.of("*"));
         source.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"));

@@ -14,7 +14,7 @@ spring:
   application:
     name: 'ms-social-api'
   datasource:
-    url: ${SPRING_DATASOURCE_URL:jdbc:mysql://localhost:3307/db-ms-social?useUnicode=true&characterEncoding=utf8&useSSL=false&serverTimezone=UTC}
+    url: ${SPRING_DATASOURCE_URL:jdbc:mysql://localhost:3311/db-ms-social?useUnicode=true&characterEncoding=utf8&useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true}
     username: ${SPRING_DATASOURCE_USERNAME:user}
     password: ${SPRING_DATASOURCE_PASSWORD:secret}
     driverClassName: com.mysql.cj.jdbc.Driver
@@ -32,8 +32,6 @@ spring:
       ddl-auto: validate
     show-sql: true
 
-  main:
-    allow-bean-definition-overriding: true
 springdoc:
   api-docs:
     enabled: true

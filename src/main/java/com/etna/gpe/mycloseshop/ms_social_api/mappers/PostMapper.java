@@ -1,9 +1,27 @@
 package com.etna.gpe.mycloseshop.ms_social_api.mappers;
 
-import com.etna.gpe.mycloseshop.ms_social_api.entity.Post;
+import com.etna.gpe.mycloseshop.ms_social_api.dtos.post.CreatePostDto;
 import com.etna.gpe.mycloseshop.ms_social_api.dtos.post.PostDto;
+import com.etna.gpe.mycloseshop.ms_social_api.entity.Post;
+
+import java.util.UUID;
 
 public class PostMapper {
+
+    private PostMapper() {
+        // Private constructor to prevent instantiation
+    }
+
+    public static Post requestToEntity(CreatePostDto post) {
+        if (post == null) return null;
+        Post entity = new Post();
+        entity.setNom(post.nom());
+        entity.setDescription(post.description());
+        entity.setMedia(post.media());
+        entity.setShopId(UUID.fromString(post.shopId()));
+        return entity;
+    }
+
     public static PostDto toDto(Post post) {
         if (post == null) return null;
         return PostDto.builder()
