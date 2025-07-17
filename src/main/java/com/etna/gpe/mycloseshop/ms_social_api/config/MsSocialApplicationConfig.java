@@ -2,12 +2,11 @@ package com.etna.gpe.mycloseshop.ms_social_api.config;
 
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Info;
-
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-public class MsQuoteApplicationConfig {
+public class MsSocialApplicationConfig {
 
     @Bean
     public OpenAPI customOpenAPI() {

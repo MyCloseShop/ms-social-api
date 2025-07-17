@@ -39,7 +39,6 @@ public class CommentServiceImpl implements ICommentService {
 
         Comment comment = CommentMapper.requesToEntity(commentDto);
         comment.setUserId(UUID.fromString(jwtUserDetails.getUserId()));
-        comment.setCreatedAt(LocalDateTime.now());
 
         Comment saved = commentRepository.save(comment);
         return CommentMapper.toDto(saved);
